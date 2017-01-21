@@ -41,7 +41,6 @@ function errorCheck(err) {
 function post(subUrl, params, Authorization, body) {
     const options = formatOptions(subUrl, params, Authorization);
     options['body'] = body;
-    console.log(options);
     return rp.post(options)
     .then(response => {
         return JSON.parse(response);
