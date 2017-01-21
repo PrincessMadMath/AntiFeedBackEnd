@@ -11,6 +11,9 @@ build:
   ci:
     - sudo npm install
 
+  post_ci:
+    - pip install --upgrade botocore
+
 integrations:
   deploy:
     - integrationName: "AWS-Integration"
