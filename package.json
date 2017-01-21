@@ -4,6 +4,7 @@
   "description": "ConnuHack hackathon project",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Working\" && exit 0"
   },
   "repository": {
