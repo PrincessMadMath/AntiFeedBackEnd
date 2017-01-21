@@ -23,5 +23,5 @@ deploy:
       secret-key: $AWS_SECRET
       app-name: AntiFeedServer
       env-name: AntiFeedServer-dev
-      version-label: 1.2.1
+      version-label: 1.0.0
       region: $AWS_REGION
