@@ -1,24 +1,33 @@
 const rp = require('request-promise');
 const querystring = require('querystring');
 const TWITTER_URL = 'https://api.twitter.com/';
+const appToken = require('./appToken');
 
 module.exports = {
     renewToken
 };
 
-function renewToken(credentials) {
-    const Authorization = 'basic ' + credentials;
-    return post('oauth2/token', undefined, Authorization);
+function renewToken(Authorization) {
+    const body = 'grant_type=client_credentials';
+    return post('oauth2/token', undefined, Authorization, body)
+    .then(response => response.access_token);
 }
 
 function formatOptions(subUrl, params, Authorization) {
-    const url = TWITTER_URL + subUrl + '?' + querystring.stringify(params);
+    const uri = TWITTER_URL + subUrl + '?' + querystring.stringify(params);
     const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        'grand_type': 'client_credentials',
+        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
         Authorization
     };
-    return {url, headers};
+    return {uri, headers};
+}
+
+function errorCheck(err) {
+    console.log('Error: ' + err)
+    if (err.errors.code == 89) {
+        appToken.renew();
+        //throw
+    }
 }
 
 /**
@@ -30,10 +39,14 @@ function formatOptions(subUrl, params, Authorization) {
  * @returns {Promise.<T>|*}
  */
 function post(subUrl, params, Authorization, body) {
-    const options = formatUrl(subUrl, params, Authorization);
-    options['body'] = body
+    const options = formatOptions(subUrl, params, Authorization);
+    options['body'] = body;
+    console.log(options);
     return rp.post(options)
-    .catch(err => console.log(err));
+    .then(response => {
+        return JSON.parse(response);
+     })
+    .catch(errorCheck);
 }
 
 /**
@@ -44,7 +57,7 @@ function post(subUrl, params, Authorization, body) {
  * @returns {Promise.<T>|*}
  */
 function get(subUrl, params, Authorization) {
-    const options = formatUrl(subUrl, params, Authorization);
+    const options = formatOption(subUrl, params, Authorization);
     return rp.get(options)
-    .catch(err => console.log(err));
+    .catch(errorCheck);
 }

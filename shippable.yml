@@ -1,0 +1,25 @@
+
+# Language setting
+language: node_js
+
+# Version number
+node_js:
+  - "5.3"
+
+
+build:
+  ci:
+    - sudo npm install
+
+  post_ci:
+    - pip install --upgrade botocore
+
+integrations:
+  deploy:
+    - integrationName: "AWS-Integration"
+      type: aws
+      target: eb_paas
+      platform: "Node.js"
+      application_name: AntiFeedServer
+      env_name: AntiFeedServer-dev
+      region: us-west-2
