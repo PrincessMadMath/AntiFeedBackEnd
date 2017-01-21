@@ -9,6 +9,6 @@ app.post('/search', function (req, res, next) {
   const body = req.body;
 })
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+app.listen(process.env.PORT || 3000, function () {
+  console.log('Express listening on port ' + process.env.PORT + ' or 3000');
 })

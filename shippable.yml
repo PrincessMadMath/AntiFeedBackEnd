@@ -13,7 +13,7 @@ build:
 
 integrations:
   deploy:
-    - integrationName: "aws-eb-integration"
+    - integrationName: "AWS-Integration"
       type: aws
       target: eb_paas
       platform: "Node.js"
