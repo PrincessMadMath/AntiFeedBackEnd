@@ -18,9 +18,9 @@ build:
 
 deploy:
   steps:
-  - mrono/elastic-beanstalk-deploy:
+  - hotakasaito/elastic-beanstalk-deploy:
       key: $AWS_KEY
       secret: $AWS_SECRET
-      app-name: AntiFeedServer
-      env-name: AntiFeedServer-dev
+      app_name: AntiFeedServer
+      env_name: AntiFeedServer-dev
       region: $AWS_REGION
