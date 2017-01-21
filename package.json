@@ -2,9 +2,10 @@
   "name": "antifeedbackend",
   "version": "1.0.0",
   "description": "ConnuHack hackathon project",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Working\" && exit 0"
+    "test": "echo \"Working\" && exit 0",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,22 @@
+
+# Language setting
+language: node_js
+
+# Version number
+node_js:
+  - "5.3"
+
+
+build:
+  ci:
+    - sudo npm install
+
+integrations:
+  deploy:
+    - integrationName: "aws-eb-integration"
+      type: aws
+      target: eb_paas
+      platform: "Node.js"
+      application_name: AntiFeedServer
+      env_name: AntiFeedServer-dev
+      region: us-west-2
