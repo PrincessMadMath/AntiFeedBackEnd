@@ -1,0 +1,19 @@
+{
+  "name": "antifeedbackend",
+  "version": "1.0.0",
+  "description": "ConnuHack hackathon project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samLav/AntiFeedBackEnd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samLav/AntiFeedBackEnd/issues"
+  },
+  "homepage": "https://github.com/samLav/AntiFeedBackEnd#readme"
+}
