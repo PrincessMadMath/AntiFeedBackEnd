@@ -24,6 +24,7 @@ passport.deserializeUser(function(obj, cb) {
   cb(null, obj);
 });
 
+app.use(require('morgan')('combined'));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require('cookie-parser')());
