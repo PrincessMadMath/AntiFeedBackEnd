@@ -31,7 +31,11 @@ function init(app, passport) {
         function (req, res, next) {
             const body = req.body;
             search.feed(req.user.id)
-            .then(feed => res.send(feed));
+            .then(feed => res.send(feed))
+            .catch(() => {
+                res.status(403);
+                res.send('User not authenticated');
+            })
         }
     );
 
