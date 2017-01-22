@@ -81,13 +81,16 @@ app.post('/auth/twitter/callback', function(req, res){
 
 app.get('/api/feed',
   function (req, res, next) {
-    if (!req.session.oauth_access_token) {
+    if (!req.session.oauth_token_secret) {
       return res
         .sendStatus(403);
     }
     const body = req.body;
     search.feed(req.session.oauth_token, req.session.oauth_token_secret)
-      .then(feed => res.send(feed));
+      .then(feed => {
+        console.log(feed);
+        res.send(_.flatten(feed));
+      });
   }
 );
 

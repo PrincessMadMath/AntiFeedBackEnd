@@ -25,7 +25,17 @@ function getCall(f, params) {
 }
 
 function analyseTweets(tweets) {
+    tweets = _.filter(tweets, tweets.text);
     const p = _.map(tweets.statuses, tweet => sentimentAnalysis.analyseText(tweet));
+    return Promise.all(p);
+}
+
+function analyseTweetsNoBreak(tweets) {
+    tweets = _.filter(tweets, tweets.text);
+    if (tweets[0]  instanceof Array) {
+        tweets = tweets[0];
+    }
+    const p = _.map(tweets, tweet => sentimentAnalysis.analyseText(tweet));
     return Promise.all(p);
 }
 
@@ -73,21 +83,21 @@ function filterTweets(tweets, sentiments) {
 
 function getAntiTweet(params, sentiment) {
     return getCall(twitterCalls.searchTweet, params)
-    .then(analyseTweets)
+    .then(analyseTweetsNoBreak)
     .then(analyseSentiments)
     .then(filterTweets, sentiment);
 }
 
 function filterHT(feed) {
-    const tweets = _.filter(feed, tweet => tweet.entities.hashtags.length > 0);
-    return analyseTweets(tweets);
+    const tweets = _.filter(JSON.parse(feed), tweet => tweet.entities.hashtags.length > 0);
+    return analyseTweetsNoBreak(tweets);
 }
 
 function getAntiTweets(tweets) {
     let antiFeed = [];
     _.forEach(tweets, tweet => {
         _.forEach(tweet.hashtags, ht => {
-            antiFeed.push({q:ht, lang:'en', count:50}, tweet.sentiment);
+            antiFeed.push(getAntiTweet({q:ht, lang:'en', count:80}, tweet.sentiment));
         });
     });
     return Promise.all(antiFeed);
@@ -96,9 +106,6 @@ function getAntiTweets(tweets) {
 
 function getFeed(token, tokenSecret) {
     return new Promise((fulfill, reject) => {
-        if (!SecretCache.get(id)) {
-            reject();
-        }
         oauth.get(
             'https://api.twitter.com/1.1/statuses/home_timeline.json',
             token,
