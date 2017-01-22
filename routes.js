@@ -37,7 +37,7 @@ function init(app, passport) {
     app.post('/compare',
         function (req, res, next) {
             const body = req.body;
-            search.getTweets({q:body.query, lang:'en', count:80})
+            search.getTweets({q:body.query, lang:'en', count:100})
             .then(tweets => res.send(tweets));
         }
     );

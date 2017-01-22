@@ -24,7 +24,14 @@ function getCall(f, params) {
 }
 
 function analyseTweets(tweets) {
-    const p = _.map(tweets.statuses, tweet => sentimentAnalysis.analyseText(tweet) );
+    const p = _.map(tweets.statuses, tweet => sentimentAnalysis.analyseText(tweet.text) );
+/*    const text = tweet.text;
+    const name = tweet.user.name;
+    const handle = tweet.user.screen_name;
+    const retweets = tweet.retweet_count;
+    const profileUrl = tweet.user.profile_image_url_https;
+    const hashtags = _.map(tweet.entities.hashtags, ht => ht.text);
+    */
     return Promise.all(p);
 }
 
