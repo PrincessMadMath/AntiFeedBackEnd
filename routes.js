@@ -30,7 +30,8 @@ function init(app, passport) {
         //require('connect-ensure-login').ensureLoggedIn(),
         function (req, res, next) {
             const body = req.body;
-            search.feed({q: body.query, lang: 'en', count: 50}, passport._strategies.twitter._oauth);
+            search.feed(req.user.id)
+            .then(feed => res.send(feed));
         }
     );
 

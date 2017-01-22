@@ -4,6 +4,7 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const appToken = require('./appToken');
 const routes = require('./routes.js');
 const bodyParser = require('body-parser');
+const secretCache = require('./SecretCache');
 const app = express();
 
 
@@ -13,6 +14,7 @@ passport.use(new TwitterStrategy({
       callbackURL: process.env.TWITTER_CB_URL
     },
     function(token, tokenSecret, profile, cb) {
+      secretCache.add(profile.id, token, tokenSecret);
       return cb(null, profile);
     }));
 

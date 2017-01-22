@@ -1,6 +1,7 @@
 const appToken = require('./appToken');
 const twitterCalls = require('./twitterCalls');
 const sentimentAnalysis = require('./sentiment/sentimentAnalysis');
+const secretCache = require('./SecretCache');
 const OAuth = require('oauth');
 const Promise = require('bluebird');
 const _ = require('lodash');
@@ -65,17 +66,19 @@ function getTweets(params) {
     .then(reduceSentiment);
 }
 
-function feed(params, userToken, userSecret) {
-    oauth.get(
-        'https://api.twitter.com/1.1/statuses/home_timeline.json',
-        '2683977224-5uX2b0V2YEJAb7XygYxR06vzPLuE7jCsKOn2jEa',
-        //you can get it at dev.twitter.com for your own apps
-        'uHnA4j66nWNunP1bwQCwer4jkDL4FTcoNPeeTcbLQTF5Y',
-        //you can get it at dev.twitter.com for your own apps
-        function (e, data, res){
-            if (e) console.error(e);
-            console.log(data);
-        });
+function feed(id) {
+    return new Promise((fulfill, reject) => {
+        oauth.get(
+            'https://api.twitter.com/1.1/statuses/home_timeline.json',
+            SecretCache.get(id)['token'],
+            //you can get it at dev.twitter.com for your own apps
+            SecretCache.get(id)['tokenSecret'],
+            //you can get it at dev.twitter.com for your own apps
+            function (e, data, res) {
+                if (e) reject(e);
+                fulfill(data);
+            });
+    });
     //getCall(twitterCalls.getTimeline, params)
     //.then(tweets => console.log(tweets));
 }
