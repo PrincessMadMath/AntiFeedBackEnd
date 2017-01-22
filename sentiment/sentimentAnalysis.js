@@ -10,11 +10,10 @@ module.exports = {
 
 
 
-function analyseText(tweet)
+function analyseText(text)
 {
-    const text = tweet.text;
     return post(text).then(res => {
-        var sentimentAnalys = analyseResponse(tweet, res);
+        var sentimentAnalys = analyseResponse(text, res);
         console.log(JSON.stringify(sentimentAnalys));
         return sentimentAnalys;
     });
@@ -64,12 +63,7 @@ function analyseResponse(text, response)
     if(score > factor.StrongTrigger)
     {
         return {
-           text,
-            name,
-            handle,
-            retweets,
-            hashtags,
-            profileUrl,
+            "text" : text,
             "sentiment": "positive",
             "strength" : "strong"
         }
@@ -96,12 +90,7 @@ function analyseResponse(text, response)
     if(score < -factor.WeakTrigger)
     {
         return {
-           text,
-            name,
-            handle,
-            retweets,
-            hashtags,
-            profileUrl,
+           "text" : text,
             "sentiment": "negative",
             "strength" : "weak"
         }
@@ -109,12 +98,7 @@ function analyseResponse(text, response)
 
 
     return {
-       text,
-        name,
-        handle,
-        retweets,
-        hashtags,
-        profileUrl,
+        "text" : text,
         "sentiment": "neutral"
     }
 }
