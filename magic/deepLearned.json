@@ -9,6 +9,36 @@
             "name" : "republican",
             "related" : ["#trump", "#republicans", "#gop", "#teaparty", "#inauguration", "#presidentTrump", "#prolife", "#goa", "#2a", "#nra"],
             "oppositeStand" : "democrat"
+        },
+        {
+            "name" : "macho",
+            "related" : ["#gym", "#fit", "#workout", "#bodybuilding", "#fitness"],
+            "oppositeStand" : "geek"
+        },
+        {
+            "name" : "geek",
+            "related" : ["#geek", "#nerd", "#nerdy", "#art", "#gaming", "#gamer"],
+            "oppositeStand" : "macho"
+        },
+        {
+            "name" : "capitalism",
+            "related" : ["#capitalism", "#money", "#cash", "#gold"],
+            "oppositeStand" : "communism"
+        },
+        {
+            "name" : "communism",
+            "related" : ["#china", "#communism", "#red", "#charity"],
+            "oppositeStand" : "capitalism"
+        },
+        {
+            "name" : "nature",
+            "related" : ["#globalwarming", "#climatechange", "#climatechangeisreal", "#solar", "#renewables"],
+            "oppositeStand" : "production"
+        },
+        {
+            "name" : "production",
+            "related" : ["#climatedenial", "#coal", "#powerplant", "#job", "#powerplant", "#gasturbines", "#hoax", "#oilandgas"],
+            "oppositeStand" : "nature"
         }
     ]
 }
