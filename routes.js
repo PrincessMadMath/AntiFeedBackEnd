@@ -26,15 +26,16 @@ function init(app, passport) {
         passport.authenticate('twitter', { successRedirect: '/',
             failureRedirect: '/failed_login' }));
 
-    app.get('/feed',
-        require('connect-ensure-login').ensureLoggedIn(),
+    app.get('/api/feed',
+        //require('connect-ensure-login').ensureLoggedIn(),
         function (req, res, next) {
             const body = req.body;
-            search.feed({q: body.query, lang: 'en', count: 50}, passport._strategies.twitter._oauth);
+            search.feed(req.user.id)
+            .then(feed => res.send(feed));
         }
     );
 
-    app.post('/compare',
+    app.post('/api/compare',
         function (req, res, next) {
             const body = req.body;
             search.getTweets({q:body.query, lang:'en', count:100})
