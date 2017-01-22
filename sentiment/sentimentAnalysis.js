@@ -20,23 +20,45 @@ function analyseText(text)
 
 function analyseResponse(text, response)
 {
-    let isPositive = _.find(response.entities, function(o) { 
+    let isStrongPositive = _.find(response.entities, function(o) { 
+        return o.label.toLowerCase().includes("strongpositive")}) !== undefined;
+    let isStrongNegative = _.find(response.entities, function(o) { 
+        return o.label.toLowerCase().includes("strongnegative")}) !== undefined;
+    let isWeakPositive = _.find(response.entities, function(o) { 
         return o.label.toLowerCase().includes("positive")}) !== undefined;
-    let isNegative = _.find(response.entities, function(o) { 
+    let isWeakNegative = _.find(response.entities, function(o) { 
         return o.label.toLowerCase().includes("negative")}) !== undefined;
 
-    if(isPositive)
+    if(isStrongPositive)
     {
         return {
             "text": text,
-            "sentiment": "positive"
+            "sentiment": "positive",
+            "strength" : "strong"
         }
     }
-    if(isNegative)
+    if(isStrongNegative)
     {
         return {
             "text": text,
-            "sentiment": "negative"
+            "sentiment": "negative",
+            "strength" : "strong"
+        }
+    }
+    if(isWeakPositive)
+    {
+        return {
+            "text": text,
+            "sentiment": "positive",
+            "strength" : "weak"
+        }
+    }
+    if(isWeakNegative)
+    {
+        return {
+            "text": text,
+            "sentiment": "negative",
+            "strength" : "weak"
         }
     }
 
