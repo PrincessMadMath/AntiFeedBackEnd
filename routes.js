@@ -6,7 +6,7 @@ module.exports = {
 
 function init(app) {
     app.get('/', function (req, res, next) {
-        res.send('Hello World!')
+        res.send('Secret: ' + process.env.TWITTER_CB_URL )
     });
 
    /* app.get('/auth/twitter', passport.authenticate('twitter'));
