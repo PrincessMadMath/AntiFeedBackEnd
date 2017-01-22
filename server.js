@@ -86,7 +86,7 @@ app.get('/api/feed',
         .sendStatus(403);
     }
     const body = req.body;
-    search.feed(req.session.id)
+    search.feed(req.session.oauth_token, req.session.oauth_token_secret)
       .then(feed => res.send(feed));
   }
 );
@@ -98,7 +98,6 @@ app.post('/api/compare',
       .then(tweets => res.send(tweets));
   }
 );
-
 
 
 app.listen(process.env.PORT || 3000, function () {

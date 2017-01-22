@@ -94,16 +94,16 @@ function getAntiTweets(tweets) {
 
 }
 
-function getFeed(id) {
+function getFeed(token, tokenSecret) {
     return new Promise((fulfill, reject) => {
         if (!SecretCache.get(id)) {
             reject();
         }
         oauth.get(
             'https://api.twitter.com/1.1/statuses/home_timeline.json',
-            SecretCache.get(id)['token'],
+            token,
             //you can get it at dev.twitter.com for your own apps
-            SecretCache.get(id)['tokenSecret'],
+            tokenSecret,
             //you can get it at dev.twitter.com for your own apps
             function (e, data, res) {
                 if (e) reject(e);
@@ -112,8 +112,8 @@ function getFeed(id) {
     })
 }
 
-function feed(id) {
-    return getFeed(id)
+function feed(token, tokenSecret) {
+    return getFeed(token, tokenSecret)
     .then(filterHT)
     .then(getAntiTweets)
 }
