@@ -1,7 +1,7 @@
 const appToken = require('./appToken');
 const twitterCalls = require('./twitterCalls');
 const sentimentAnalysis = require('./sentiment/sentimentAnalysis');
-const OAuth = require('OAuth');
+const OAuth = require('oauth');
 const Promise = require('bluebird');
 const _ = require('lodash');
 const oauth = new OAuth.OAuth(
