@@ -10,11 +10,12 @@ module.exports = {
 
 
 
-function analyseText(text)
+function analyseText(tweet)
 {
+    const text = tweet.text;
     return post(text).then(res => {
-        var sentimentAnalys = analyseResponse(text, res);
-        console.log(JSON.stringify(sentimentAnalys));
+        var sentimentAnalys = analyseResponse(tweet, res);
+        //console.log(JSON.stringify(sentimentAnalys));
         return sentimentAnalys;
     });
 }
@@ -56,14 +57,26 @@ function post(text)
     );     
 }
 
-function analyseResponse(text, response)
+function analyseResponse(tweet, response)
 {
     let score = getSentimentScore(response.entities);
+
+    const text = tweet.text;
+    const name = tweet.user.name;
+    const handle = tweet.user.screen_name;
+    const retweets = tweet.retweet_count;
+    const profileUrl = tweet.user.profile_image_url_https;
+    const hashtags = _.map(tweet.entities.hashtags, ht => ht.text);
 
     if(score > factor.StrongTrigger)
     {
         return {
             "text" : text,
+            name,
+            handle,
+            retweets,
+            profileUrl,
+            hashtags,
             "sentiment": "positive",
             "strength" : "strong"
         }
@@ -73,6 +86,11 @@ function analyseResponse(text, response)
     {
         return {
             "text": text,
+            name,
+            handle,
+            retweets,
+            profileUrl,
+            hashtags,
             "sentiment": "positive",
             "strength" : "weak"
         }
@@ -82,6 +100,11 @@ function analyseResponse(text, response)
     {
         return {
             "text": text,
+            name,
+            handle,
+            retweets,
+            profileUrl,
+            hashtags,
             "sentiment": "negative",
             "strength" : "strong"
         }
@@ -91,6 +114,11 @@ function analyseResponse(text, response)
     {
         return {
            "text" : text,
+            name,
+            handle,
+            retweets,
+            profileUrl,
+            hashtags,
             "sentiment": "negative",
             "strength" : "weak"
         }
@@ -99,6 +127,11 @@ function analyseResponse(text, response)
 
     return {
         "text" : text,
+        name,
+        handle,
+        retweets,
+        profileUrl,
+        hashtags,
         "sentiment": "neutral"
     }
 }
@@ -121,7 +154,6 @@ function getScoreForPredicate(entities, factor, predicate)
 {
     let list = entities.filter(predicate)
     let listCount = list !== undefined ? list.length : 0;
-    console.log(listCount + " : " + factor);
     return listCount * factor;
 }
 
