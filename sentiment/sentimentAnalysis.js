@@ -68,6 +68,8 @@ function analyseResponse(tweet, response)
     const profileUrl = tweet.user.profile_image_url_https;
     const hashtags = _.map(tweet.entities.hashtags, ht => ht.text);
 
+    //console.log("Score of " + score);
+
     if(score > factor.StrongTrigger)
     {
         return {
@@ -82,7 +84,7 @@ function analyseResponse(tweet, response)
         }
     }
 
-    if(score > factor.WeakTrigger)
+    if(score >= factor.WeakTrigger)
     {
         return {
             "text": text,
@@ -96,7 +98,7 @@ function analyseResponse(tweet, response)
         }
     }
 
-    if(score < factor.StrongTrigger)
+    if(score < -factor.StrongTrigger)
     {
         return {
             "text": text,
@@ -110,7 +112,7 @@ function analyseResponse(tweet, response)
         }
     }
 
-    if(score < -factor.WeakTrigger)
+    if(score <= -factor.WeakTrigger)
     {
         return {
            "text" : text,
@@ -154,6 +156,7 @@ function getScoreForPredicate(entities, factor, predicate)
 {
     let list = entities.filter(predicate)
     let listCount = list !== undefined ? list.length : 0;
+    //console.log(listCount + " : " + factor);
     return listCount * factor;
 }
 
