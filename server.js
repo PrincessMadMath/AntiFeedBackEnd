@@ -9,7 +9,9 @@ const search = require('./search');
 const rp = require('request-promise');
 const qs = require('querystring');
 const _ = require('lodash');
-
+const Promise = require('bluebird');
+const magic = require('./magic/magic');
+const sapToken = require('./sentiment/sapToken');
 
 passport.use(new TwitterStrategy({
       consumerKey: process.env.TWITTER_API_KEY,
@@ -102,10 +104,40 @@ app.post('/api/compare',
   }
 );
 
+// From a # will return 2 feeds: one in the same bubble, the other one the opposite bubble
+  app.post('/api/bubble',
+      function (req, res, next) {
+          const tag = req.body.query;
+          const bubbleAnalysis = magic.getOppositeHashTag(tag);
+          Promise
+              .join(getBubble(bubbleAnalysis.positive), getBubble(bubbleAnalysis.negative))
+              .spread((positive, negative) => {
+                  res.send({ positive,negative })
+              });
+      }
+  );
+
+  
+function getBubble(tags)
+{
+    var maps = _.map(tags, element => search
+        .getTweets({q:element, land:"en", cound:30})
+        .then(res => [...res.positive, ...res.negative])
+    );
+    return Promise
+        .all(maps)
+        .then(res => {
+            return res;
+        });
+}
+
 
 app.listen(process.env.PORT || 3000, function () {
+  sapToken.renew();
   appToken.renew()
   .then(() => {
     console.log('Express listening on port ' + process.env.PORT + ' or 3000');
   });
 });
+
+

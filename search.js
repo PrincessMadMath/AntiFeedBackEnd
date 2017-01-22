@@ -17,7 +17,7 @@ const oauth = new OAuth.OAuth(
 
 module.exports = {
     getTweets,
-    feed
+    feed,
 };
 
 function getCall(f, params) {
@@ -25,13 +25,25 @@ function getCall(f, params) {
 }
 
 function analyseTweets(tweets) {
-    tweets = _.filter(tweets, tweets.text);
-    const p = _.map(tweets.statuses, tweet => sentimentAnalysis.analyseText(tweet));
+    if (!tweets) {
+        return [];
+    }
+    if (tweets.statuses) {
+        tweets = tweets.statuses;
+    }
+    if (tweets[0] instanceof Array) {
+        tweets = tweets[0];
+    }
+    if (!tweets instanceof Array) {
+        return [];
+    }
+    const p = tweets.map(tweet => {
+        return sentimentAnalysis.analyseText(tweet);
+      });
     return Promise.all(p);
 }
 
 function analyseTweetsNoBreak(tweets) {
-    tweets = _.filter(tweets, tweets.text);
     if (tweets[0]  instanceof Array) {
         tweets = tweets[0];
     }
@@ -44,7 +56,7 @@ function analyseSentiments(tweets) {
     list['positive'] = [];
     list['negative'] = [];
     _.forEach(tweets, tweet => {
-        console.log(tweet['sentiment']);
+       //console.log(tweet['sentiment']);
        if (tweet['sentiment'] === 'positive') {
            list['positive'].push(tweet);
        } else if (tweet['sentiment'] === 'negative') {
@@ -57,8 +69,8 @@ function analyseSentiments(tweets) {
 function reduceSentiment(list) {
     const positiveLen = list['positive'].length;
     const negativeLen = list['negative'].length;
-    console.log(positiveLen);
-    console.log(negativeLen);
+    //console.log(positiveLen);
+    //console.log(negativeLen);
 
     if (positiveLen > negativeLen) {
         list['positive'] = _.take(list['positive'], negativeLen);
@@ -69,7 +81,7 @@ function reduceSentiment(list) {
 }
 
 function getTweets(params) {
-    console.log(params);
+    //console.log(params);
     return getCall(twitterCalls.searchTweet, params)
     .then(analyseTweets)
     .then(analyseSentiments)

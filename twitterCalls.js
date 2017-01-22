@@ -29,10 +29,10 @@ function formatOptions(subUrl, params, Authorization) {
 
 function errorCheck(err) {
     console.log('Error: ' + err)
-    if (err.errors.code == 89) {
+    /*if (err.errors.code == 89) {
         appToken.renew();
         //throw
-    }
+    }*/
 }
 
 /**
