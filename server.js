@@ -7,6 +7,8 @@ const secretCache = require('./SecretCache');
 const app = express();
 const search = require('./search');
 const rp = require('request-promise');
+const qs = require('querystring');
+const _ = require('lodash');
 
 
 passport.use(new TwitterStrategy({
@@ -65,9 +67,10 @@ app.post('/auth/twitter/callback', function(req, res){
     json: true
   };
   rp(options)
-    .then(function (body) {
+    .then(function (response) {
       // POST succeeded...
-      console.log(res);
+      var a = qs.parse(response);
+      _.assign(req.session, a);
       res.sendStatus(200);
     })
     .catch(function (err) {
@@ -78,7 +81,10 @@ app.post('/auth/twitter/callback', function(req, res){
 
 app.get('/api/feed',
   function (req, res, next) {
-    return res.sendStatus(200);
+    if (!req.session.oauth_access_token) {
+      return res
+        .sendStatus(403);
+    }
     const body = req.body;
     search.feed(req.session.id)
       .then(feed => res.send(feed));
