@@ -15,7 +15,7 @@ function renew() {
     const encodedCredentials = 'Basic ' + base64.encode(credentials);
     return twitterCalls.renewToken(encodedCredentials)
     .then(newToken => {
-        token = newToken;
+        token = 'Bearer ' + newToken;
     });
 }
 

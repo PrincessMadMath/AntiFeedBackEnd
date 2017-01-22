@@ -15,8 +15,8 @@ function init(app) {
         passport.authenticate('twitter', { successRedirect: '/',
             failureRedirect: '/login' }));
 */
-    app.post('/search', function (req, res, next) {
+    app.post('/compare', function (req, res, next) {
         const body = req.body;
-        search.general(body.query);
+        search.tweets({q:body.query, lang:'en', count:20});
     });
 }

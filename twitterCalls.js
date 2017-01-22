@@ -4,13 +4,18 @@ const TWITTER_URL = 'https://api.twitter.com/';
 const appToken = require('./appToken');
 
 module.exports = {
-    renewToken
+    renewToken,
+    searchTweet,
 };
 
 function renewToken(Authorization) {
     const body = 'grant_type=client_credentials';
     return post('oauth2/token', undefined, Authorization, body)
     .then(response => response.access_token);
+}
+
+function searchTweet(q, Authorization) {
+    return get('1.1/search/tweets.json', q, Authorization);
 }
 
 function formatOptions(subUrl, params, Authorization) {
@@ -42,9 +47,7 @@ function post(subUrl, params, Authorization, body) {
     const options = formatOptions(subUrl, params, Authorization);
     options['body'] = body;
     return rp.post(options)
-    .then(response => {
-        return JSON.parse(response);
-     })
+    .then(response => JSON.parse(response))
     .catch(errorCheck);
 }
 
@@ -56,7 +59,9 @@ function post(subUrl, params, Authorization, body) {
  * @returns {Promise.<T>|*}
  */
 function get(subUrl, params, Authorization) {
-    const options = formatOption(subUrl, params, Authorization);
+    const options = formatOptions(subUrl, params, Authorization);
+    console.log(options);
     return rp.get(options)
+    .then(response => JSON.parse(response))
     .catch(errorCheck);
 }
