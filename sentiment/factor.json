@@ -1,0 +1,12 @@
+{
+    "StrongPositive" : 5,
+    "StrongNegative" : -5,
+    "WeakPositive" : 1,
+    "WeakNegative" : -1,
+    "MinorProblem" : -3,
+    "MajorProblem" : -10,
+    "AmbigousProfanity" : -5,
+    "UnambigousProfanity" : -10,
+    "StrongTrigger" : 6, 
+    "WeakTrigger" : 3 
+}
