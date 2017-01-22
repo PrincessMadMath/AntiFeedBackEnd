@@ -10,7 +10,7 @@ module.exports = {
 
 function renew() {
     const appKey = process.env.TWITTER_API_KEY;
-    const appSecret = process.env.TWITTER_SECRET_KEY;
+    const appSecret = process.env.TWITTER_API_SECRET;
     const credentials = appKey + ':' + appSecret;
     const encodedCredentials = 'Basic ' + base64.encode(credentials);
     return twitterCalls.renewToken(encodedCredentials)
