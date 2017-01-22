@@ -66,7 +66,16 @@ function getTweets(params) {
 }
 
 function feed(params, userToken, userSecret) {
-    console.log(params);
-    getCall(twitterCalls.getTimeline, params)
-    .then(tweets => console.log(tweets));
+    oauth.get(
+        'https://api.twitter.com/1.1/statuses/home_timeline.json',
+        '2683977224-5uX2b0V2YEJAb7XygYxR06vzPLuE7jCsKOn2jEa',
+        //you can get it at dev.twitter.com for your own apps
+        'uHnA4j66nWNunP1bwQCwer4jkDL4FTcoNPeeTcbLQTF5Y',
+        //you can get it at dev.twitter.com for your own apps
+        function (e, data, res){
+            if (e) console.error(e);
+            console.log(data);
+        });
+    //getCall(twitterCalls.getTimeline, params)
+    //.then(tweets => console.log(tweets));
 }
