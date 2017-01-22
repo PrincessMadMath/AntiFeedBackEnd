@@ -1,12 +1,12 @@
 {
     "StrongPositive" : 5,
     "StrongNegative" : -5,
-    "WeakPositive" : 1,
+    "WeakPositive" : 2,
     "WeakNegative" : -1,
     "MinorProblem" : -3,
     "MajorProblem" : -10,
     "AmbigousProfanity" : -5,
     "UnambigousProfanity" : -10,
     "StrongTrigger" : 6, 
-    "WeakTrigger" : 3 
+    "WeakTrigger" : 2 
 }

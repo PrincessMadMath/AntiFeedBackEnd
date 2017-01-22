@@ -1,0 +1,15 @@
+{
+    "stands" : [
+        {
+            "name" : "democrat",
+            "related" : ["#womansmarch", "#womensmarch","#womansmarchonwashington", "#womensmarchonwashington","#theresistance", "#thankyouobama", "#notmypresident", "#prochoice", "#lgbt", "#lgbtrights"],
+            "oppositeStand" : "republican"
+        },
+        {
+            "name" : "republican",
+            "related" : ["#trump", "#republicans", "#gop", "#teaparty", "#inauguration", "#presidentTrump", "#prolife", "#goa", "#2a", "#nra"],
+            "oppositeStand" : "democrat"
+        }
+    ]
+}
+
