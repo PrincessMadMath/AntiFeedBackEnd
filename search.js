@@ -66,19 +66,54 @@ function getTweets(params) {
     .then(reduceSentiment);
 }
 
-function feed(id) {
+function filterTweets(tweets, sentiments) {
+    if (sentiments === 'positive') return tweets['negative'];
+    else return tweets['positive'];
+}
+
+function getAntiTweet(params, sentiment) {
+    return getCall(twitterCalls.searchTweet, params)
+    .then(analyseTweets)
+    .then(analyseSentiments)
+    .then(filterTweets, sentiment);
+}
+
+function filterHT(feed) {
+    const tweets = _.filter(feed, tweet => tweet.entities.hashtags.length > 0);
+    return analyseTweets(tweets);
+}
+
+function getAntiTweets(tweets) {
+    let antiFeed = [];
+    _.forEach(tweets, tweet => {
+        _.forEach(tweet.hashtags, ht => {
+            antiFeed.push({q:ht, lang:'en', count:50}, tweet.sentiment);
+        });
+    });
+    return Promise.all(antiFeed);
+
+}
+
+function getFeed(token, tokenSecret) {
     return new Promise((fulfill, reject) => {
+        if (!SecretCache.get(id)) {
+            reject();
+        }
         oauth.get(
             'https://api.twitter.com/1.1/statuses/home_timeline.json',
-            SecretCache.get(id)['token'],
+            token,
             //you can get it at dev.twitter.com for your own apps
-            SecretCache.get(id)['tokenSecret'],
+            tokenSecret,
             //you can get it at dev.twitter.com for your own apps
             function (e, data, res) {
                 if (e) reject(e);
                 fulfill(data);
             });
-    });
-    //getCall(twitterCalls.getTimeline, params)
-    //.then(tweets => console.log(tweets));
+    })
+}
+
+function feed(token, tokenSecret) {
+    return getFeed(token, tokenSecret)
+    .then(filterHT)
+    .then(getAntiTweets)
 }
