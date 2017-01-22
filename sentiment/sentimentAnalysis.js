@@ -9,16 +9,17 @@ module.exports = {
 
 
 
-function analyseText(text)
+function analyseText(tweet)
 {
+    const text = tweet.text;
     return post(text).then(res => {
-        var sentimentAnalys = analyseResponse(text, res); 
+        var sentimentAnalys = analyseResponse(tweet, res);
         console.log(JSON.stringify(sentimentAnalys));
         return sentimentAnalys;
     });
 }
 
-function analyseResponse(text, response)
+function analyseResponse(tweet, response)
 {
     let isStrongPositive = _.find(response.entities, function(o) { 
         return o.label.toLowerCase().includes("strongpositive")}) !== undefined;
@@ -28,11 +29,22 @@ function analyseResponse(text, response)
         return o.label.toLowerCase().includes("positive")}) !== undefined;
     let isWeakNegative = _.find(response.entities, function(o) { 
         return o.label.toLowerCase().includes("negative")}) !== undefined;
+    const text = tweet.text;
+    const name = tweet.user.name;
+    const handle = tweet.user.screen_name;
+    const retweets = tweet.retweet_count;
+    const profileUrl = tweet.user.profile_image_url_https;
+    const hashtags = _.map(tweet.entities.hashtags, ht => ht.text);
 
     if(isStrongPositive)
     {
         return {
-            "text": text,
+           text,
+            name,
+            handle,
+            retweets,
+            hashtags,
+            profileUrl,
             "sentiment": "positive",
             "strength" : "strong"
         }
@@ -40,7 +52,12 @@ function analyseResponse(text, response)
     if(isStrongNegative)
     {
         return {
-            "text": text,
+           text,
+            name,
+            handle,
+            retweets,
+            hashtags,
+            profileUrl,
             "sentiment": "negative",
             "strength" : "strong"
         }
@@ -48,7 +65,12 @@ function analyseResponse(text, response)
     if(isWeakPositive)
     {
         return {
-            "text": text,
+           text,
+            name,
+            handle,
+            retweets,
+            hashtags,
+            profileUrl,
             "sentiment": "positive",
             "strength" : "weak"
         }
@@ -56,14 +78,24 @@ function analyseResponse(text, response)
     if(isWeakNegative)
     {
         return {
-            "text": text,
+           text,
+            name,
+            handle,
+            retweets,
+            hashtags,
+            profileUrl,
             "sentiment": "negative",
             "strength" : "weak"
         }
     }
 
     return {
-        "text": text,
+       text,
+        name,
+        handle,
+        retweets,
+        hashtags,
+        profileUrl,
         "sentiment": "neutral"
     }
 }

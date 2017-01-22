@@ -24,7 +24,8 @@ function getCall(f, params) {
 }
 
 function analyseTweets(tweets) {
-    return Promise.all(_.map(tweets, tweet => sentimentAnalysis.analyseText(tweet) ));
+    const p = _.map(tweets.statuses, tweet => sentimentAnalysis.analyseText(tweet) );
+    return Promise.all(p);
 }
 
 function analyseSentiments(tweets) {
@@ -32,10 +33,11 @@ function analyseSentiments(tweets) {
     list['positive'] = [];
     list['negative'] = [];
     _.forEach(tweets, tweet => {
-       if (tweet['sentiment'] === 'positive') {
-           list['positive'].push(tweet['text']);
-       } else if (tweet['sentiment' === 'negative']) {
-           list['negative'].push(tweet['text']);
+        console.log(tweet['sentiment']);
+       if (tweet['sentiment'] === 'positive' && tweet['strength'] === 'strong') {
+           list['positive'].push(tweet);
+       } else if (tweet['sentiment'] === 'negative' && tweet['strength'] === 'strong') {
+           list['negative'].push(tweet);
        }
     });
     return list;
@@ -44,11 +46,13 @@ function analyseSentiments(tweets) {
 function reduceSentiment(list) {
     const positiveLen = list['positive'].length;
     const negativeLen = list['negative'].length;
+    console.log(positiveLen);
+    console.log(negativeLen);
 
     if (positiveLen > negativeLen) {
-        _.take(list['positive'], negativeLen);
+        list['positive'] = _.take(list['positive'], negativeLen);
     } else if (negativeLen > positiveLen) {
-        _.take(list['negative'], positiveLen)
+        list['negative'] = _.take(list['negative'], positiveLen)
     }
     return list;
 }

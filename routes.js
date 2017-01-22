@@ -30,15 +30,15 @@ function init(app, passport) {
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res, next) {
             const body = req.body;
-            search.feed({q: body.query, lang: 'en', count: 20}, passport._strategies.twitter._oauth);
+            search.feed({q: body.query, lang: 'en', count: 50}, passport._strategies.twitter._oauth);
         }
     );
 
     app.post('/compare',
         function (req, res, next) {
             const body = req.body;
-            search.getTweets({q:body.query, lang:'en', count:20})
-            .then(res.send);
+            search.getTweets({q:body.query, lang:'en', count:80})
+            .then(tweets => res.send(tweets));
         }
     );
 }
