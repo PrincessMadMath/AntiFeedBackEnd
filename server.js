@@ -9,7 +9,7 @@ const app = express();
 
 passport.use(new TwitterStrategy({
       consumerKey: process.env.TWITTER_API_KEY,
-      consumerSecret: process.env.TWITTER_SECRET_KEY,
+      consumerSecret: process.env.TWITTER_API_SECRET,
       callbackURL: process.env.TWITTER_CB_URL
     },
     function(token, tokenSecret, profile, cb) {
