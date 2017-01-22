@@ -24,7 +24,7 @@ function analyseText(tweet)
 function post(text)
 {
     return tokenManager.getToken().then(token =>{
-        console.log("Token: " + token.bearer);
+        //console.log("Token: " + token.bearer);
         var options = {
                 method: "POST",
                 uri: SENTIMENT_URL,
