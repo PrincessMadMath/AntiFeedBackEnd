@@ -33,7 +33,11 @@ function getOppositeHashTag(hashtags)
     if(currentStand != undefined)
     {
         let oppositeStandInfo = findStand(currentStand.oppositeStand);
-        return oppositeStandInfo.related;
+        return {
+                "positive" : currentStand.related,
+                "negative" : oppositeStandInfo.related
+            }
+        
     }
     
     return [];
