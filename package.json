@@ -23,12 +23,14 @@
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
+    "lodash": "^4.17.4",
     "express-session": "^1.14.2",
     "morgan": "^1.7.0",
     "oauth": "^0.9.15",
     "passport": "^0.3.2",
     "passport-twitter": "^1.0.4",
     "request": "^2.79.0",
-    "request-promise": "^4.1.1"
+    "request-promise": "^4.1.1",
+    "yaas.js": "^0.2.1"
   }
 }
