@@ -10,7 +10,7 @@ const rp = require('request-promise');
 const _ = require('lodash');
 const Promise = require('bluebird');
 const magic = require('./magic/magic');
-
+const sapToken = require('./sentiment/sapToken');
 
 passport.use(new TwitterStrategy({
       consumerKey: process.env.TWITTER_API_KEY,
@@ -125,6 +125,7 @@ function getBubble(tags)
 
 
 app.listen(process.env.PORT || 3000, function () {
+  sapToken.renew();
   appToken.renew()
   .then(() => {
     console.log('Express listening on port ' + process.env.PORT + ' or 3000');
