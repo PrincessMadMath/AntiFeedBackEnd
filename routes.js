@@ -1,4 +1,7 @@
 const search = require('./search');
+const magic = require('./magic/magic');
+const _ = require('lodash');
+const Promise = require('bluebird');
 
 module.exports = {
     init
@@ -42,4 +45,31 @@ function init(app, passport) {
             .then(tweets => res.send(tweets));
         }
     );
+
+    // From a # will return 2 feeds: one in the same bubble, the other one the opposite bubble
+    app.post('/api/bubble',
+        function (req, res, next) {
+            const tag = req.body.query;
+            const bubbleAnalysis = magic.getOppositeHashTag(tag);
+            Promise
+                .join(getBubble(bubbleAnalysis.positive), getBubble(bubbleAnalysis.negative))
+                .spread((positive, negative) => {
+                    res.send({ positive,negative })
+                });
+        }
+    );
+}
+
+
+function getBubble(tags)
+{
+    var maps = _.map(tags, element => search
+        .getTweets({q:element, land:"en", cound:30})
+        .then(res => [...res.positive, ...res.negative])
+    );
+    return Promise
+        .all(maps)
+        .then(res => {
+            return res;
+        });
 }
